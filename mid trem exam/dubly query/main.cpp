@@ -1,4 +1,5 @@
-#include <bits/stdc++.h>
+//#include <bits/stdc++.h>
+#include<iostream>
 
 using namespace std;
 class Node{
@@ -29,17 +30,24 @@ void insert_head(Node* &head, Node* &tail, int val){
 void insert_at_any(Node* head, int pos, int val){
     Node* newNode = new Node(val);
     Node* temp = head;
-    for(int i=1; i<=pos; i++){
+    for(int i=0; i<pos-1; i++){
         temp = temp->next;
     }
     newNode->next = temp->next;
-    temp->next = newNode;
-    newNode->next->prev = newNode;
+    //temp->next = newNode;
     newNode->prev = temp;
+    temp->next->prev = newNode;
+
+    temp->next = newNode;
 }
 
-void insert_tail(Node* &tail, int val){
+void insert_tail(Node* &tail, Node* &head, int val){
     Node* newNode = new Node(val);
+    if(head==NULL){
+        head=newNode;
+        tail=newNode;
+        return;
+    }
     tail->next = newNode;
     newNode->prev =tail;
     tail = tail->next;
@@ -62,6 +70,7 @@ void print_reverse(Node* tail){
         cout<<temp->val<<' ';
         temp=temp->prev;
     }
+    cout<<endl;
 }
 
 int size(Node* head){
@@ -85,18 +94,24 @@ int main()
         cin>>pos>>val;
         if(pos==0){
             insert_head(head, tail, val);
+            print_normal(head);
+            print_reverse(tail);
         }
         else if(pos==size(head)){
-            insert_tail(tail, val);
+            insert_tail(tail, head, val);
+            print_normal(head);
+            print_reverse(tail);
         }
         else if(pos >= size(head)){
             cout<<"Invalid"<<endl;
         }
         else{
             insert_at_any(head, pos, val);
+            print_normal(head);
+            print_reverse(tail);
         }
     }
-    print_normal(head);
-    print_reverse(tail);
+    // print_normal(head);
+    // print_reverse(tail);
     return 0;
 }
